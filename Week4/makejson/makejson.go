@@ -1,6 +1,11 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"encoding/json"
+	"fmt"
+	"os"
+)
 
 // Write a program which prompts the user
 // to first enter a name, and then enter an address.
@@ -10,30 +15,29 @@ import "fmt"
 // Your program should use Marshal() to create a JSON object
 // from the map, and then your program should print the JSON object.
 
-// Log structure to collect name and address of user input
-type Log struct {
-	name, address string
-}
-
-var m map[string]Log
-
 func main() {
-	// Define user input variables
-	var name string
-	var address string
-
 	// Prompt user to enter name
 	fmt.Print("Enter a name: ")
-	// Read user input
-	fmt.Scanln(&name)
+
+	// Read input from user
+	reader := bufio.NewReader(os.Stdin)
+	name, _ := reader.ReadString('\n')
 
 	// Prompt user to enter name
 	fmt.Print("Enter an address: ")
 	// Read user input
-	fmt.Scanln(&address)
+	address, _ := reader.ReadString('\n')
 
-	m = make(map[string]Log)
-	m[name] = Log{name, address}
+	// Create map
+	m := make(map[string]string)
 
-	fmt.Println(m[name])
+	// Assign user input
+	m["Name"] = name
+	m["Address"] = address
+
+	fmt.Println("What you entered:", m)
+
+	b, _ := json.Marshal(m)
+	fmt.Println("JSON object created with Marshall function: ", b)
+
 }
